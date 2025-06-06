@@ -57,7 +57,6 @@
             pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             pictureBox1.TabIndex = 2;
             pictureBox1.TabStop = false;
-            pictureBox1.Click += pictureBox1_Click;
             // 
             // label2
             // 
@@ -108,6 +107,7 @@
             Controls.Add(label2);
             Controls.Add(label1);
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             Name = "About";
             Text = "About - DevCommander";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();

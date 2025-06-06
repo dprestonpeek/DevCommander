@@ -332,7 +332,6 @@ namespace DevCommander
             MainMenuStrip = menuStrip1;
             Name = "EditCommands";
             Text = "Edit commands - DevCommander v0.1";
-            Load += EditCommands_Load;
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel1.PerformLayout();
             splitContainer1.Panel2.ResumeLayout(false);

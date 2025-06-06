@@ -23,8 +23,6 @@ namespace DevCommander
         string commandText = "";
         bool togglable = false;
         int prevSelected = -1;
-        int nodeRefreshLayers = 0;
-        int nodeRefreshIndex = 0;
         TreeNode currentParent = null;
         Dictionary<string, TreeNode> AllNodes = new Dictionary<string, TreeNode>();
 
@@ -112,12 +110,7 @@ namespace DevCommander
                 }
                 AllNodes.Add(displayName, newNode);
             }
-            currentParent = null;
             CommandTree.ExpandAll();
-        }
-
-        private void CommandList_SelectedIndexChanged(object sender, EventArgs e)
-        {
         }
 
         private void EnableDisableEditing()
@@ -238,10 +231,8 @@ namespace DevCommander
         private void DeleteButton_Click(object sender, EventArgs e)
         {
             //int i = CommandList.SelectedIndex;
-            //CommandList.Items.RemoveAt(i);
             string nodeText = CommandTree.SelectedNode.Text;
             Command cmdToRemove = Commands.GetCommandByString(nodeText);
-            //CommandTree.Nodes.RemoveAt(i);
             int newIndex = Commands.commandList.IndexOf(cmdToRemove) - 1;
             if (newIndex < 0)
             {
@@ -255,7 +246,6 @@ namespace DevCommander
 
         private void ReorderUp_Click(object sender, EventArgs e)
         {
-            //int index = CommandList.SelectedIndex;
             int index = Commands.commandList.IndexOf(Commands.GetCommandByString(CommandTree.SelectedNode.Text));
             prevSelected = index;
             if (index > 0)
@@ -266,7 +256,6 @@ namespace DevCommander
                 Commands.commandList[index] = temp;
                 RefreshList();
                 DisableEditing();
-                //CommandList.SelectedIndex = prevSelected - 1;
 
                 CommandTree.SelectedNode = GetNodeByString(Commands.commandList[prevSelected - 1].displayText);
             }
@@ -274,10 +263,8 @@ namespace DevCommander
 
         private void ReorderDown_Click(object sender, EventArgs e)
         {
-            //int index = CommandList.SelectedIndex;
             int index = Commands.commandList.IndexOf(Commands.GetCommandByString(CommandTree.SelectedNode.Text));
             prevSelected = index;
-            //if (index != CommandList.Items.Count - 1)
             if (index != CommandTree.Nodes.Count - 1)
             {
                 Command cmdToMove = Commands.commandList[index];
@@ -424,11 +411,6 @@ namespace DevCommander
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new About().Show();
-        }
-
-        private void EditCommands_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }
