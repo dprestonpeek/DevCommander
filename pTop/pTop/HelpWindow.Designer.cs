@@ -69,7 +69,7 @@ namespace DevCommander
             label1.AutoSize = true;
             label1.Location = new System.Drawing.Point(8, 12);
             label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(388, 30);
+            label1.Size = new System.Drawing.Size(387, 30);
             label1.TabIndex = 0;
             label1.Text = "Preceed the name of your command with one of these options.\r\nWhen adding nodes, the relationship context reads from top to bottom. ";
             // 
@@ -78,7 +78,7 @@ namespace DevCommander
             label2.AutoSize = true;
             label2.Location = new System.Drawing.Point(42, 65);
             label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(361, 30);
+            label2.Size = new System.Drawing.Size(362, 30);
             label2.TabIndex = 1;
             label2.Text = "Parent Node - This node is a \"parent\". All subsequent nodes will be \r\nChild Nodes unless otherwise specified.";
             // 
@@ -105,7 +105,7 @@ namespace DevCommander
             label9.AutoSize = true;
             label9.Location = new System.Drawing.Point(42, 110);
             label9.Name = "label9";
-            label9.Size = new System.Drawing.Size(370, 60);
+            label9.Size = new System.Drawing.Size(371, 60);
             label9.TabIndex = 8;
             label9.Text = resources.GetString("label9.Text");
             // 
@@ -179,7 +179,7 @@ namespace DevCommander
             label14.AutoSize = true;
             label14.Location = new System.Drawing.Point(3, 128);
             label14.Name = "label14";
-            label14.Size = new System.Drawing.Size(575, 135);
+            label14.Size = new System.Drawing.Size(576, 135);
             label14.TabIndex = 1;
             label14.Text = resources.GetString("label14.Text");
             // 
@@ -188,7 +188,7 @@ namespace DevCommander
             label13.AutoSize = true;
             label13.Location = new System.Drawing.Point(3, 13);
             label13.Name = "label13";
-            label13.Size = new System.Drawing.Size(624, 105);
+            label13.Size = new System.Drawing.Size(625, 105);
             label13.TabIndex = 0;
             label13.Text = resources.GetString("label13.Text");
             // 
@@ -249,16 +249,16 @@ namespace DevCommander
             label6.AutoSize = true;
             label6.Location = new System.Drawing.Point(70, 68);
             label6.Name = "label6";
-            label6.Size = new System.Drawing.Size(264, 45);
+            label6.Size = new System.Drawing.Size(265, 45);
             label6.TabIndex = 4;
-            label6.Text = "Make use of the Toggle feature. When the above \r\nkeyword is detected, the pScript menu item will\r\ntoggle its checkmark within the command list.";
+            label6.Text = "Make use of the Toggle feature. When the above \r\nkeyword is detected, the script list-item will\r\ntoggle its checkmark within the command list.";
             // 
             // label5
             // 
             label5.AutoSize = true;
             label5.Location = new System.Drawing.Point(6, 68);
             label5.Name = "label5";
-            label5.Size = new System.Drawing.Size(55, 15);
+            label5.Size = new System.Drawing.Size(56, 15);
             label5.TabIndex = 3;
             label5.Text = "::pToggle";
             // 
@@ -276,7 +276,7 @@ namespace DevCommander
             label3.AutoSize = true;
             label3.Location = new System.Drawing.Point(6, 12);
             label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(319, 15);
+            label3.Size = new System.Drawing.Size(318, 15);
             label3.TabIndex = 1;
             label3.Text = "Keywords can be used in scripts to execute special features.";
             // 

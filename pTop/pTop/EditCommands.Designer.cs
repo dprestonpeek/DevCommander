@@ -84,6 +84,7 @@ namespace DevCommander
             // 
             CommandTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             CommandTextBox.Enabled = false;
+            CommandTextBox.HideSelection = false;
             CommandTextBox.Location = new System.Drawing.Point(12, 92);
             CommandTextBox.Name = "CommandTextBox";
             CommandTextBox.ShowSelectionMargin = true;
@@ -294,7 +295,7 @@ namespace DevCommander
             // openSourceFolderToolStripMenuItem
             // 
             openSourceFolderToolStripMenuItem.Name = "openSourceFolderToolStripMenuItem";
-            openSourceFolderToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            openSourceFolderToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             openSourceFolderToolStripMenuItem.Text = "Open Source Folder";
             openSourceFolderToolStripMenuItem.Click += openSourceFolderToolStripMenuItem_Click;
             // 
@@ -321,7 +322,6 @@ namespace DevCommander
             // 
             // EditCommands
             // 
-            AcceptButton = SaveButton;
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(575, 360);
