@@ -231,18 +231,22 @@ namespace DevCommander
 
         private void DeleteButton_Click(object sender, EventArgs e)
         {
-            //int i = CommandList.SelectedIndex;
-            string nodeText = CommandTree.SelectedNode.Text;
-            Command cmdToRemove = Commands.GetCommandByString(nodeText);
-            int newIndex = Commands.commandList.IndexOf(cmdToRemove) - 1;
-            if (newIndex < 0)
+            Popup areyousure = new Popup("Delete command item?", "Are you sure you want to delete this command item? This cannot be undone.", 2, "Yes,Cancel");
+            if (areyousure.GetDialogResponse() == "Yes")
             {
-                newIndex = 0;
+                //int i = CommandList.SelectedIndex;
+                string nodeText = CommandTree.SelectedNode.Text;
+                Command cmdToRemove = Commands.GetCommandByString(nodeText);
+                int newIndex = Commands.commandList.IndexOf(cmdToRemove) - 1;
+                if (newIndex < 0)
+                {
+                    newIndex = 0;
+                }
+                Commands.commandList.Remove(Commands.GetCommandByString(nodeText));
+                Program.SaveCommands();
+                RefreshList();
+                CommandTree.SelectedNode = GetNodeByString(Commands.commandList[newIndex].displayText);
             }
-            Commands.commandList.Remove(Commands.GetCommandByString(nodeText));
-            Program.SaveCommands();
-            RefreshList();
-            CommandTree.SelectedNode = GetNodeByString(Commands.commandList[newIndex].displayText);
         }
 
         private void ReorderUp_Click(object sender, EventArgs e)
