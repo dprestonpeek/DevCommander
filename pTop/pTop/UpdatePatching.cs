@@ -44,6 +44,8 @@ namespace DevCommander
             // Add runsHidden data field to all entries as "false"
             LoadCommands_Pre200();
             Program.SaveCommands();
+            Properties.Settings.Default.version = Program.version;
+            Properties.Settings.Default.Save();
             Application.Restart();
         }
 
