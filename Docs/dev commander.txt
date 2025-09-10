@@ -1,0 +1,16 @@
+dev commander
+
+
+
+Exception when moving object down/up too far
+Exception when saving when no object selected
+object is unselected when saved
+unnecessarily asking to save before closing
+some objects perform differently when run inside the edit window rather than on the taskbar
+can't run 2 pCalls in same script
+
+Remove <><> keys and replace with left/right arrows
+	Edit save data to allow for "layer" value
+Add "visible in list" tickbox
+Add ability to add dividers (type "------" or "______")
+Add Recent commands option

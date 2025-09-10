@@ -1,0 +1,15 @@
+{
+  "profiles": {
+    "pPass - default": {
+      "commandName": "Project"
+    },
+    "pPass - cmdline \"test string\"": {
+      "commandName": "Project",
+      "commandLineArgs": "\"test string\""
+    },
+    "pPass - ssh copy": {
+      "commandName": "Project",
+      "commandLineArgs": "\"ssh -i C:\\Users\\dpres\\Documents\\Projects\\GatedNetworks\\AuthKeys\\AWSInstance-GatedNetworks.pem ec2-user@54.146.168.99\""
+    }
+  }
+}
