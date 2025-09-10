@@ -160,12 +160,14 @@ namespace DevCommander
                 {
                     DisplayTextBox.Text = selectedCommand.displayText;
                     CommandTextBox.Text = selectedCommand.commandText;
+                    RunsHiddenCheckbox.Checked = selectedCommand.runsHidden;
                 }
             }
             else
             {
                 DisplayTextBox.Text = "";
                 CommandTextBox.Text = "";
+                RunsHiddenCheckbox.Checked = false;
             }
         }
 
