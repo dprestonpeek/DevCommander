@@ -94,6 +94,7 @@ namespace DevCommander
             CommandTextBox.TabIndex = 1;
             CommandTextBox.Text = "";
             CommandTextBox.TextChanged += CommandTextBox_TextChanged;
+            CommandTextBox.Enter += CommandTextBox_Enter;
             // 
             // DisplayTextBox
             // 

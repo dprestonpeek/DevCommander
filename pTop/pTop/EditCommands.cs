@@ -199,16 +199,18 @@ namespace DevCommander
         {
             if (SaveChanges.Visible)
             {
-                editing = false;
+                DisableEditing();
             }
             if (editing)
             {
-                SaveChanges.Visible = true;
+                Command currCmd = Commands.GetCommandByString(CommandTree.SelectedNode.Text);
+                if (currCmd != null && currCmd.commandText != CommandTextBox.Text)
+                {
+                    SaveChanges.Visible = true;
+                    return;
+                }
             }
-            else
-            {
-                Close();
-            }
+            Close();
         }
 
         private void AddButton_Click(object sender, EventArgs e)
@@ -421,6 +423,11 @@ namespace DevCommander
         private void updateCommandsToV020ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             UpdatePatching.VersionBasedUpdate();
+        }
+
+        private void CommandTextBox_Enter(object sender, EventArgs e)
+        {
+            SaveChanges.Visible = false;
         }
     }
 }
