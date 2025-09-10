@@ -335,14 +335,14 @@ namespace DevCommander
             // howToUseToolStripMenuItem
             // 
             howToUseToolStripMenuItem.Name = "howToUseToolStripMenuItem";
-            howToUseToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            howToUseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             howToUseToolStripMenuItem.Text = "How to use...";
             howToUseToolStripMenuItem.Click += howToUseToolStripMenuItem_Click;
             // 
             // aboutToolStripMenuItem
             // 
             aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            aboutToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             aboutToolStripMenuItem.Text = "About...";
             aboutToolStripMenuItem.Click += aboutToolStripMenuItem_Click;
             // 

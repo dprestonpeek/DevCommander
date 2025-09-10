@@ -35,7 +35,7 @@ namespace DevCommander
 
         static void Main(string[] args)
         {
-            UpdatePatching.CheckVersion();
+            UpdatePatching.VersionBasedUpdate();
 
             bool hasArgs = false;
             string commandToRun = "";
@@ -82,7 +82,14 @@ namespace DevCommander
             string[] commands = commandText.Split('~');
             for (int i = 0; i < commands.Length - 1; i += 4)
             {
-                Commands.commandList.Add(new Command(commands[i], commands[i + 1], bool.Parse(commands[i + 2]), bool.Parse(commands[i + 3])));
+                try
+                {
+                    Commands.commandList.Add(new Command(commands[i], commands[i + 1], bool.Parse(commands[i + 2]), bool.Parse(commands[i + 3])));
+                }
+                catch(Exception ex)
+                {
+                    UpdatePatching.ForceUpdate();
+                }
             }
         }
 

@@ -413,5 +413,10 @@ namespace DevCommander
         {
             new About().Show();
         }
+
+        private void updateCommandsToV020ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            UpdatePatching.VersionBasedUpdate();
+        }
     }
 }

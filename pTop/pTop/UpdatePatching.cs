@@ -4,12 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace DevCommander
 {
     internal class UpdatePatching
     {
-        public static bool CheckVersion()
+        public static bool VersionBasedUpdate()
         {
             int programVersion = Program.version;
             int userVersion = 0;
@@ -28,14 +29,22 @@ namespace DevCommander
                 {
                     // Add runsHidden data field to all entries as "false"
                     LoadCommands_Pre200();
-                    //SaveCommands_Pre200();
                     Program.SaveCommands();
                     Properties.Settings.Default.version = programVersion;
                     Properties.Settings.Default.Save();
+                    Application.Restart();
                 }
                 return true;
             }
             return false;
+        }
+
+        public static void ForceUpdate()
+        {
+            // Add runsHidden data field to all entries as "false"
+            LoadCommands_Pre200();
+            Program.SaveCommands();
+            Application.Restart();
         }
 
         private static void LoadCommands_Pre200()
