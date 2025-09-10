@@ -14,13 +14,15 @@ namespace DevCommander
         public string displayText;
         public string commandText;
         public bool togglable;
+        public bool runsHidden;
         public bool isOn;
 
-        public Command(string displayText, string commandText, bool togglable)
+        public Command(string displayText, string commandText, bool togglable, bool runsHidden)
         {
             this.displayText = displayText;
             this.commandText = commandText;
             this.togglable = togglable;
+            this.runsHidden = runsHidden;
             this.isOn = false;
         }
     }
@@ -88,6 +90,10 @@ namespace DevCommander
                     ProcessStartInfo p = new ProcessStartInfo();
                     p.FileName = "CMD.exe";
                     p.Arguments = "/c " + scriptFile;
+                    if (cmd.runsHidden)
+                    {
+                        p.CreateNoWindow = true;
+                    }
                     Process.Start(p);
                 }
             }

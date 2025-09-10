@@ -26,8 +26,17 @@ namespace DevCommander
         static string currentSelected = "";
         static bool editingCommands = false;
 
+        //4 Digit Version Number: Major.minor-fixx
+        // 0.2-00 would be 200. 1.4.13 would be 1413.
+        public static int version = 200;
+        public static string versionNumStr = "0.2-00";
+        public static string lilVersionStr = "Alpha Version " + versionNumStr;
+        public static string versionStr = "Alpha Version " + versionNumStr + "  |  Released September 10th, 2025";
+
         static void Main(string[] args)
         {
+            UpdatePatching.CheckVersion();
+
             bool hasArgs = false;
             string commandToRun = "";
             if (args.Length > 0)
@@ -71,9 +80,9 @@ namespace DevCommander
         {
             string commandText = File.ReadAllText(cmdFile);
             string[] commands = commandText.Split('~');
-            for (int i = 0; i < commands.Length - 1; i += 3)
+            for (int i = 0; i < commands.Length - 1; i += 4)
             {
-                Commands.commandList.Add(new Command(commands[i], commands[i + 1], bool.Parse(commands[i + 2])));
+                Commands.commandList.Add(new Command(commands[i], commands[i + 1], bool.Parse(commands[i + 2]), bool.Parse(commands[i + 3])));
             }
         }
 
@@ -82,7 +91,7 @@ namespace DevCommander
             string saveText = "";
             foreach (Command cmd in Commands.commandList)
             {
-                saveText += cmd.displayText + "~" + cmd.commandText + "~" + cmd.togglable;
+                saveText += cmd.displayText + "~" + cmd.commandText + "~" + cmd.togglable + "~" + cmd.runsHidden;
                 if (cmd.displayText != Commands.commandList[Commands.commandList.Count - 1].displayText)
                 {
                     saveText += "~";

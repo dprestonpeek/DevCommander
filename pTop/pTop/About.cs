@@ -15,6 +15,7 @@ namespace DevCommander
         public About()
         {
             InitializeComponent();
+            VersionLabel.Text = Program.versionStr;
         }
     }
 }

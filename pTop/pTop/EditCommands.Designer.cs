@@ -49,6 +49,8 @@ namespace DevCommander
             CommandTree = new System.Windows.Forms.TreeView();
             FolderButton = new System.Windows.Forms.Button();
             splitContainer1 = new System.Windows.Forms.SplitContainer();
+            RunsHiddenCheckbox = new System.Windows.Forms.CheckBox();
+            checkBox2 = new System.Windows.Forms.CheckBox();
             menuStrip1 = new System.Windows.Forms.MenuStrip();
             editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             openSourceFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -88,7 +90,7 @@ namespace DevCommander
             CommandTextBox.Location = new System.Drawing.Point(12, 92);
             CommandTextBox.Name = "CommandTextBox";
             CommandTextBox.ShowSelectionMargin = true;
-            CommandTextBox.Size = new System.Drawing.Size(277, 203);
+            CommandTextBox.Size = new System.Drawing.Size(296, 206);
             CommandTextBox.TabIndex = 1;
             CommandTextBox.Text = "";
             CommandTextBox.TextChanged += CommandTextBox_TextChanged;
@@ -99,7 +101,7 @@ namespace DevCommander
             DisplayTextBox.Enabled = false;
             DisplayTextBox.Location = new System.Drawing.Point(12, 35);
             DisplayTextBox.Name = "DisplayTextBox";
-            DisplayTextBox.Size = new System.Drawing.Size(277, 23);
+            DisplayTextBox.Size = new System.Drawing.Size(296, 23);
             DisplayTextBox.TabIndex = 0;
             DisplayTextBox.TextChanged += DisplayTextBox_TextChanged;
             // 
@@ -115,7 +117,7 @@ namespace DevCommander
             // OKButton
             // 
             OKButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            OKButton.Location = new System.Drawing.Point(201, 301);
+            OKButton.Location = new System.Drawing.Point(221, 323);
             OKButton.Name = "OKButton";
             OKButton.Size = new System.Drawing.Size(75, 23);
             OKButton.TabIndex = 11;
@@ -127,7 +129,7 @@ namespace DevCommander
             // 
             SaveButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             SaveButton.Enabled = false;
-            SaveButton.Location = new System.Drawing.Point(214, 301);
+            SaveButton.Location = new System.Drawing.Point(233, 323);
             SaveButton.Name = "SaveButton";
             SaveButton.Size = new System.Drawing.Size(75, 23);
             SaveButton.TabIndex = 3;
@@ -138,7 +140,7 @@ namespace DevCommander
             // ReorderDown
             // 
             ReorderDown.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-            ReorderDown.Location = new System.Drawing.Point(162, 19);
+            ReorderDown.Location = new System.Drawing.Point(182, 19);
             ReorderDown.Name = "ReorderDown";
             ReorderDown.Size = new System.Drawing.Size(23, 23);
             ReorderDown.TabIndex = 6;
@@ -149,7 +151,7 @@ namespace DevCommander
             // ReorderUp
             // 
             ReorderUp.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-            ReorderUp.Location = new System.Drawing.Point(187, 19);
+            ReorderUp.Location = new System.Drawing.Point(207, 19);
             ReorderUp.Name = "ReorderUp";
             ReorderUp.Size = new System.Drawing.Size(23, 23);
             ReorderUp.TabIndex = 7;
@@ -160,7 +162,7 @@ namespace DevCommander
             // AddButton
             // 
             AddButton.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-            AddButton.Location = new System.Drawing.Point(253, 19);
+            AddButton.Location = new System.Drawing.Point(273, 19);
             AddButton.Name = "AddButton";
             AddButton.Size = new System.Drawing.Size(23, 23);
             AddButton.TabIndex = 9;
@@ -171,7 +173,7 @@ namespace DevCommander
             // DeleteButton
             // 
             DeleteButton.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-            DeleteButton.Location = new System.Drawing.Point(228, 19);
+            DeleteButton.Location = new System.Drawing.Point(248, 19);
             DeleteButton.Name = "DeleteButton";
             DeleteButton.Size = new System.Drawing.Size(23, 23);
             DeleteButton.TabIndex = 8;
@@ -184,7 +186,7 @@ namespace DevCommander
             SaveChanges.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             SaveChanges.AutoSize = true;
             SaveChanges.ForeColor = System.Drawing.Color.Red;
-            SaveChanges.Location = new System.Drawing.Point(111, 305);
+            SaveChanges.Location = new System.Drawing.Point(207, 305);
             SaveChanges.Name = "SaveChanges";
             SaveChanges.Size = new System.Drawing.Size(85, 15);
             SaveChanges.TabIndex = 16;
@@ -198,7 +200,7 @@ namespace DevCommander
             // HelpButton
             // 
             HelpButton.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-            HelpButton.Location = new System.Drawing.Point(214, 6);
+            HelpButton.Location = new System.Drawing.Point(233, 6);
             HelpButton.Name = "HelpButton";
             HelpButton.Size = new System.Drawing.Size(75, 23);
             HelpButton.TabIndex = 11;
@@ -211,7 +213,7 @@ namespace DevCommander
             // 
             RunButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             RunButton.Enabled = false;
-            RunButton.Location = new System.Drawing.Point(12, 301);
+            RunButton.Location = new System.Drawing.Point(12, 323);
             RunButton.Name = "RunButton";
             RunButton.Size = new System.Drawing.Size(75, 23);
             RunButton.TabIndex = 4;
@@ -226,7 +228,7 @@ namespace DevCommander
             CommandTree.HideSelection = false;
             CommandTree.Location = new System.Drawing.Point(8, 48);
             CommandTree.Name = "CommandTree";
-            CommandTree.Size = new System.Drawing.Size(268, 247);
+            CommandTree.Size = new System.Drawing.Size(288, 250);
             CommandTree.TabIndex = 5;
             CommandTree.AfterSelect += CommandTree_AfterSelect;
             // 
@@ -234,7 +236,7 @@ namespace DevCommander
             // 
             FolderButton.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             FolderButton.Font = new System.Drawing.Font("Segoe UI Symbol", 9F);
-            FolderButton.Location = new System.Drawing.Point(184, 6);
+            FolderButton.Location = new System.Drawing.Point(203, 6);
             FolderButton.Name = "FolderButton";
             FolderButton.Size = new System.Drawing.Size(24, 23);
             FolderButton.TabIndex = 10;
@@ -251,6 +253,7 @@ namespace DevCommander
             // 
             // splitContainer1.Panel1
             // 
+            splitContainer1.Panel1.Controls.Add(RunsHiddenCheckbox);
             splitContainer1.Panel1.Controls.Add(label3);
             splitContainer1.Panel1.Controls.Add(FolderButton);
             splitContainer1.Panel1.Controls.Add(label2);
@@ -263,6 +266,7 @@ namespace DevCommander
             // 
             // splitContainer1.Panel2
             // 
+            splitContainer1.Panel2.Controls.Add(checkBox2);
             splitContainer1.Panel2.Controls.Add(label1);
             splitContainer1.Panel2.Controls.Add(CommandTree);
             splitContainer1.Panel2.Controls.Add(OKButton);
@@ -272,16 +276,38 @@ namespace DevCommander
             splitContainer1.Panel2.Controls.Add(ReorderUp);
             splitContainer1.Panel2.Controls.Add(AddButton);
             splitContainer1.Panel2MinSize = 250;
-            splitContainer1.Size = new System.Drawing.Size(575, 336);
-            splitContainer1.SplitterDistance = 292;
+            splitContainer1.Size = new System.Drawing.Size(614, 358);
+            splitContainer1.SplitterDistance = 311;
             splitContainer1.TabIndex = 21;
+            // 
+            // RunsHiddenCheckbox
+            // 
+            RunsHiddenCheckbox.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            RunsHiddenCheckbox.AutoSize = true;
+            RunsHiddenCheckbox.Location = new System.Drawing.Point(16, 304);
+            RunsHiddenCheckbox.Name = "RunsHiddenCheckbox";
+            RunsHiddenCheckbox.Size = new System.Drawing.Size(123, 19);
+            RunsHiddenCheckbox.TabIndex = 12;
+            RunsHiddenCheckbox.Text = "Hide cmd window";
+            RunsHiddenCheckbox.UseVisualStyleBackColor = true;
+            // 
+            // checkBox2
+            // 
+            checkBox2.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            checkBox2.AutoSize = true;
+            checkBox2.Location = new System.Drawing.Point(8, 304);
+            checkBox2.Name = "checkBox2";
+            checkBox2.Size = new System.Drawing.Size(91, 19);
+            checkBox2.TabIndex = 13;
+            checkBox2.Text = "Visible in list";
+            checkBox2.UseVisualStyleBackColor = true;
             // 
             // menuStrip1
             // 
             menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { editToolStripMenuItem, helpToolStripMenuItem });
             menuStrip1.Location = new System.Drawing.Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new System.Drawing.Size(575, 24);
+            menuStrip1.Size = new System.Drawing.Size(614, 24);
             menuStrip1.TabIndex = 22;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -324,14 +350,14 @@ namespace DevCommander
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(575, 360);
+            ClientSize = new System.Drawing.Size(614, 382);
             Controls.Add(splitContainer1);
             Controls.Add(menuStrip1);
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             KeyPreview = true;
             MainMenuStrip = menuStrip1;
             Name = "EditCommands";
-            Text = "Edit commands - DevCommander v0.1";
+            Text = "Edit commands - DevCommander v0.2-0";
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel1.PerformLayout();
             splitContainer1.Panel2.ResumeLayout(false);
@@ -370,5 +396,7 @@ namespace DevCommander
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem howToUseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.CheckBox RunsHiddenCheckbox;
+        private System.Windows.Forms.CheckBox checkBox2;
     }
 }

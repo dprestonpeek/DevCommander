@@ -59,5 +59,14 @@ namespace DevCommander.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 199.
+        /// </summary>
+        internal static string version {
+            get {
+                return ResourceManager.GetString("version", resourceCulture);
+            }
+        }
     }
 }

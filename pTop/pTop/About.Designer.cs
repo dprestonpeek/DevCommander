@@ -33,7 +33,7 @@
             pictureBox1 = new System.Windows.Forms.PictureBox();
             label2 = new System.Windows.Forms.Label();
             label3 = new System.Windows.Forms.Label();
-            label4 = new System.Windows.Forms.Label();
+            VersionLabel = new System.Windows.Forms.Label();
             label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
@@ -77,14 +77,14 @@
             label3.Text = "© 2025 Peek Velocity. All rights reserved.";
             label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label4
+            // VersionLabel
             // 
-            label4.Location = new System.Drawing.Point(12, 94);
-            label4.Name = "label4";
-            label4.Size = new System.Drawing.Size(360, 23);
-            label4.TabIndex = 4;
-            label4.Text = "Alpha Version 0.1  |  Released May 22nd, 2025";
-            label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            VersionLabel.Location = new System.Drawing.Point(12, 94);
+            VersionLabel.Name = "VersionLabel";
+            VersionLabel.Size = new System.Drawing.Size(360, 23);
+            VersionLabel.TabIndex = 4;
+            VersionLabel.Text = "Alpha Version 0.1-1  |  Released September 10th, 2025";
+            VersionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label5
             // 
@@ -101,7 +101,7 @@
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(384, 262);
             Controls.Add(label5);
-            Controls.Add(label4);
+            Controls.Add(VersionLabel);
             Controls.Add(label3);
             Controls.Add(pictureBox1);
             Controls.Add(label2);
@@ -120,7 +120,7 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label VersionLabel;
         private System.Windows.Forms.Label label5;
     }
 }

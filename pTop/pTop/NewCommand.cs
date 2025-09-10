@@ -19,7 +19,7 @@ namespace DevCommander
 
         private void CreateButton_Click(object sender, EventArgs e)
         {
-            Commands.commandList.Add(new Command(DisplayTextBox.Text, CommandTextBox.Text, TogglableCheckbox.Checked));
+            //Commands.commandList.Add(new Command(DisplayTextBox.Text, CommandTextBox.Text, TogglableCheckbox.Checked, Runs));
             Close();
         }
 

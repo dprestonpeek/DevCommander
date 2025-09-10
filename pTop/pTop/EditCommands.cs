@@ -29,6 +29,7 @@ namespace DevCommander
         public EditCommands()
         {
             InitializeComponent();
+            Text = "Edit commands - DevCommander " + Program.versionNumStr;
             RefreshList();
         }
 
@@ -183,7 +184,7 @@ namespace DevCommander
             {
                 adding = false;
             }
-            Command newCommand = new Command(displayText, commandText, togglable);
+            Command newCommand = new Command(displayText, commandText, togglable, RunsHiddenCheckbox.Checked);
             Commands.SetCommandByString(CommandTree.SelectedNode.Text, newCommand);
             CommandTree.SelectedNode.Text = displayText;
             CommandTree.SelectedNode = GetNodeByString(displayText);
@@ -220,7 +221,7 @@ namespace DevCommander
                 //CommandList.SelectedIndex = i;
                 string newName = IncrementNameUntilUnique("NewCommand...");
                 newNode = CommandTree.Nodes.Add(newName);
-                Commands.commandList.Add(new Command(newName, "", false));
+                Commands.commandList.Add(new Command(newName, "", false, RunsHiddenCheckbox.Checked));
                 EnableDisableEditing();
             }
             RefreshList();
