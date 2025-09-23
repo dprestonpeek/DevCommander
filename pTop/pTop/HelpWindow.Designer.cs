@@ -289,7 +289,7 @@ namespace DevCommander
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             Name = "HelpWindow";
-            Text = "Help - Dev Commander";
+            Text = "Help - DevCommander";
             tabControl1.ResumeLayout(false);
             tabPage3.ResumeLayout(false);
             tabPage3.PerformLayout();

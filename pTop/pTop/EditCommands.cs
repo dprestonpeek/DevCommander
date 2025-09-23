@@ -235,6 +235,14 @@ namespace DevCommander
 
         private void DeleteButton_Click(object sender, EventArgs e)
         {
+            if (CommandTree.SelectedNode == null)
+            {
+                Popup noitem = new Popup("Cannot delete item!", "There is no item selected. Please select a command item to delete.", 1, "OK");
+                if (noitem.GetDialogResponse() == "OK")
+                {
+                    return;
+                }
+            }
             Popup areyousure = new Popup("Delete command item?", "Are you sure you want to delete this command item? This cannot be undone.", 2, "Yes,Cancel");
             if (areyousure.GetDialogResponse() == "Yes")
             {
@@ -430,6 +438,16 @@ namespace DevCommander
         private void CommandTextBox_Enter(object sender, EventArgs e)
         {
             SaveChanges.Visible = false;
+        }
+
+        private void reportABugToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ProcessStartInfo psInfo = new ProcessStartInfo
+            {
+                FileName = "https://prestonpeek.weebly.com/report-bugs.html",
+                UseShellExecute = true
+            };
+            Process.Start(psInfo);
         }
     }
 }

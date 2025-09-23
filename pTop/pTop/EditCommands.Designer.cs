@@ -57,6 +57,7 @@ namespace DevCommander
             helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             howToUseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            reportABugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -296,12 +297,14 @@ namespace DevCommander
             // 
             checkBox2.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             checkBox2.AutoSize = true;
+            checkBox2.Enabled = false;
             checkBox2.Location = new System.Drawing.Point(8, 304);
             checkBox2.Name = "checkBox2";
             checkBox2.Size = new System.Drawing.Size(91, 19);
             checkBox2.TabIndex = 13;
             checkBox2.Text = "Visible in list";
             checkBox2.UseVisualStyleBackColor = true;
+            checkBox2.Visible = false;
             // 
             // menuStrip1
             // 
@@ -328,7 +331,7 @@ namespace DevCommander
             // 
             // helpToolStripMenuItem
             // 
-            helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { howToUseToolStripMenuItem, aboutToolStripMenuItem });
+            helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { howToUseToolStripMenuItem, aboutToolStripMenuItem, reportABugToolStripMenuItem });
             helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             helpToolStripMenuItem.Text = "Help";
@@ -336,16 +339,23 @@ namespace DevCommander
             // howToUseToolStripMenuItem
             // 
             howToUseToolStripMenuItem.Name = "howToUseToolStripMenuItem";
-            howToUseToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            howToUseToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             howToUseToolStripMenuItem.Text = "How to use...";
             howToUseToolStripMenuItem.Click += howToUseToolStripMenuItem_Click;
             // 
             // aboutToolStripMenuItem
             // 
             aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            aboutToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            aboutToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             aboutToolStripMenuItem.Text = "About...";
             aboutToolStripMenuItem.Click += aboutToolStripMenuItem_Click;
+            // 
+            // reportABugToolStripMenuItem
+            // 
+            reportABugToolStripMenuItem.Name = "reportABugToolStripMenuItem";
+            reportABugToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            reportABugToolStripMenuItem.Text = "Report a Bug...";
+            reportABugToolStripMenuItem.Click += reportABugToolStripMenuItem_Click;
             // 
             // EditCommands
             // 
@@ -399,5 +409,6 @@ namespace DevCommander
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.CheckBox RunsHiddenCheckbox;
         private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.ToolStripMenuItem reportABugToolStripMenuItem;
     }
 }
