@@ -58,6 +58,7 @@ namespace DevCommander
             howToUseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             reportABugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -331,7 +332,7 @@ namespace DevCommander
             // 
             // helpToolStripMenuItem
             // 
-            helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { howToUseToolStripMenuItem, aboutToolStripMenuItem, reportABugToolStripMenuItem });
+            helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { howToUseToolStripMenuItem, aboutToolStripMenuItem, reportABugToolStripMenuItem, checkForUpdatesToolStripMenuItem });
             helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             helpToolStripMenuItem.Text = "Help";
@@ -339,23 +340,30 @@ namespace DevCommander
             // howToUseToolStripMenuItem
             // 
             howToUseToolStripMenuItem.Name = "howToUseToolStripMenuItem";
-            howToUseToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            howToUseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             howToUseToolStripMenuItem.Text = "How to use...";
             howToUseToolStripMenuItem.Click += howToUseToolStripMenuItem_Click;
             // 
             // aboutToolStripMenuItem
             // 
             aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            aboutToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             aboutToolStripMenuItem.Text = "About...";
             aboutToolStripMenuItem.Click += aboutToolStripMenuItem_Click;
             // 
             // reportABugToolStripMenuItem
             // 
             reportABugToolStripMenuItem.Name = "reportABugToolStripMenuItem";
-            reportABugToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            reportABugToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             reportABugToolStripMenuItem.Text = "Report a Bug...";
             reportABugToolStripMenuItem.Click += reportABugToolStripMenuItem_Click;
+            // 
+            // checkForUpdatesToolStripMenuItem
+            // 
+            checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem";
+            checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            checkForUpdatesToolStripMenuItem.Text = "Check for Updates...";
+            checkForUpdatesToolStripMenuItem.Click += checkForUpdatesToolStripMenuItem_Click;
             // 
             // EditCommands
             // 
@@ -410,5 +418,6 @@ namespace DevCommander
         private System.Windows.Forms.CheckBox RunsHiddenCheckbox;
         private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.ToolStripMenuItem reportABugToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem checkForUpdatesToolStripMenuItem;
     }
 }

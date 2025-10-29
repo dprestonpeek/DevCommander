@@ -28,10 +28,10 @@ namespace DevCommander
 
         //4 Digit Version Number: Major.minor-fixx
         // 0.2-00 would be 200. 1.4.13 would be 1413.
-        public static int version = 200;
-        public static string versionNumStr = "0.2-00";
+        public static int version = 201;
+        public static string versionNumStr = "0.2-01";
         public static string lilVersionStr = "Alpha Version " + versionNumStr;
-        public static string versionStr = "Alpha Version " + versionNumStr + "  |  Released September 10th, 2025";
+        public static string versionStr = "Alpha Version " + versionNumStr + "  |  Released October 28th, 2025";
 
         static void Main(string[] args)
         {

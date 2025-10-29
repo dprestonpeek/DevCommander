@@ -1,0 +1,13 @@
+>>WickedSick FPS~~False~False~Build WS for PC~set folder=E:\projectroot
+
+REM Cook from scratch, builds executables if needed
+%folder%\Engine\Build\BatchFiles\RunUAT.bat BuildCookRun -project=%folder%\MyProjectGame\MyProject.uproject -nop4 -platform=Win64 -build -cook -ue4exe=UE4Editor-Cmd.exe -prereqs
+
+REM Cook iteratively, i.e. only data changes since previous cook
+%folder%\Engine\Build\BatchFiles\RunUAT.bat BuildCookRun -project=%folder%\MyProjectGame\MyProject.uproject -nop4 -platform=Win64 -cook -iterate -ue4exe=UE4Editor-Cmd.exe -prereq~False~False~Build WS for Mac~set folder=E:\projectroot
+
+REM Cook from scratch, builds executables if needed
+%folder%\Engine\Build\BatchFiles\RunUAT.bat BuildCookRun -project=%folder%\MyProjectGame\MyProject.uproject -nop4 -platform=mac -build -cook -ue4exe=UE4Editor-Cmd.exe -prereqs
+
+REM Cook iteratively, i.e. only data changes since previous cook
+%folder%\Engine\Build\BatchFiles\RunUAT.bat BuildCookRun -project=%folder%\MyProjectGame\MyProject.uproject -nop4 -platform=mac -cook -iterate -ue4exe=UE4Editor-Cmd.exe -prereq~False~False~><PrettyCool WebTools~~False~False~Build PCWT React~cmake -S <path-to-source-dir> -B <path-to-build-dir>~False~False~Build PCWT Angular~cmake -S <path-to-source-dir> -B <path-to-build-dir>~False~False~><General~~False~False~Get External IP~nslookup myip.opendns.com. resolver1.opendns.com~False~False~Copy new password to clipboard~C:\Users\dpres\Documents\pPasswordCSharp.exe~False~False

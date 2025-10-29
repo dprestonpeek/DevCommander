@@ -25,6 +25,7 @@ namespace DevCommander
         int prevSelected = -1;
         TreeNode currentParent = null;
         Dictionary<string, TreeNode> AllNodes = new Dictionary<string, TreeNode>();
+        ProcessStartInfo psInfo;
 
         public EditCommands()
         {
@@ -442,9 +443,19 @@ namespace DevCommander
 
         private void reportABugToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ProcessStartInfo psInfo = new ProcessStartInfo
+            psInfo = new ProcessStartInfo
             {
                 FileName = "https://prestonpeek.weebly.com/report-bugs.html",
+                UseShellExecute = true
+            };
+            Process.Start(psInfo);
+        }
+
+        private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            psInfo = new ProcessStartInfo
+            {
+                FileName = "https://drive.google.com/file/d/1B8ae90jQxGOZ2_KW-iePD35r1a3lgdI1/view?pli=1",
                 UseShellExecute = true
             };
             Process.Start(psInfo);
