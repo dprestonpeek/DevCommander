@@ -10,22 +10,29 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Windows.ApplicationModel.Preview.Notes;
+using static System.ComponentModel.Design.ObjectSelectorEditor;
 
 namespace DevCommander
 {
     public partial class EditCommands : Form
     {
+        //global
+        Dictionary<string, TreeNode> AllNodes = new Dictionary<string, TreeNode>();
+        ProcessStartInfo psInfo;
+        TreeNode currentParent = null;
+
         bool aboutToAdd = false;
         bool adding = false;
         bool editing = false;
+        
+        int prevSelected = -1;
+
+        //per command
+        bool togglable = false;
 
         string displayText = "";
         string commandText = "";
-        bool togglable = false;
-        int prevSelected = -1;
-        TreeNode currentParent = null;
-        Dictionary<string, TreeNode> AllNodes = new Dictionary<string, TreeNode>();
-        ProcessStartInfo psInfo;
 
         public EditCommands()
         {
@@ -33,7 +40,106 @@ namespace DevCommander
             Text = "Edit commands - DevCommander " + Program.versionNumStr;
             RefreshList();
         }
+        private void Save()
+        {
+            SaveChanges.Visible = false;
+            editing = false;
+            if (CommandTree.SelectedNode != null)
+            {
+                displayText = IncrementNameUntilUnique(DisplayTextBox.Text, Commands.GetCommandByString(CommandTree.SelectedNode.Text).displayText);
+            }
+            commandText = CommandTextBox.Text;
+            if (adding)
+            {
+                adding = false;
+            }
+            if (CommandTree.SelectedNode != null)
+            {
+                Command newCommand = new Command(displayText, commandText, togglable, RunsHiddenCheckbox.Checked);
+                Commands.SetCommandByString(CommandTree.SelectedNode.Text, newCommand);
+                CommandTree.SelectedNode.Text = displayText;
+                CommandTree.SelectedNode = GetNodeByString(displayText);
+            }
 
+            Program.SaveCommands();
+            DisableEditing();
+            RefreshList();
+            CommandTree.SelectedNode = GetNodeByString(displayText);
+        }
+
+        private string IncrementNameUntilUnique(string displayName)
+        {
+            return IncrementNameUntilUnique(displayName, "");
+        }
+
+        private string IncrementNameUntilUnique(string displayName, string ignore)
+        {
+            string patternWparenths = "[ ][(]\\d+[)]";
+            string patternIndex = "\\d+";
+            Regex indexwParenths = new Regex(patternWparenths);
+            Regex indexOnly = new Regex(patternIndex);
+            string newDisplayName = displayName;
+
+            //if command exists in list already
+            while (Commands.GetCommandByString(newDisplayName) != null)
+            {
+                if (newDisplayName.Equals(ignore))
+                {
+                    return newDisplayName;
+                }
+
+                string endDisplayName = newDisplayName.Substring(newDisplayName.Length - 4, 4);
+                string beginDisplayName = newDisplayName.Substring(0, newDisplayName.Length - 4);
+                //if the command already has a " (##)" suffix
+                MatchCollection matches = indexwParenths.Matches(endDisplayName);
+                if (matches.Count > 0)
+                {
+                    //increment it
+                    MatchCollection indexMatch = indexOnly.Matches(endDisplayName);
+                    int index = int.Parse(indexMatch[0].Value);
+                    index++;
+                    newDisplayName = beginDisplayName + " (" + index + ")";
+                }
+                else
+                {
+                    //add one
+                    newDisplayName = displayName + " (1)";
+                }
+            }
+            return newDisplayName;
+        }
+
+        private TreeNode GetNodeByString(string displayText)
+        {
+            //return GetNodeByString(displayText, CommandTree.Nodes);
+            foreach (KeyValuePair<string, TreeNode> kvp in AllNodes)
+            {
+                if (kvp.Key.Equals(displayText))
+                {
+                    return kvp.Value;
+                }
+            }
+            return null;
+        }
+
+        private TreeNode GetNodeByString(string displayText, TreeNodeCollection nodesToCheck)
+        {
+
+            foreach (TreeNode node in nodesToCheck)
+            {
+                if (node.Text == displayText)
+                {
+                    return node;
+                }
+                if (node.Nodes.Count > 0)
+                {
+                    return GetNodeByString(displayText, node.Nodes);
+                }
+            }
+            return null;
+        }
+
+        #region Editing & UI
         private void RefreshList()
         {
             List<TreeNode> parents = new List<TreeNode>();
@@ -115,6 +221,26 @@ namespace DevCommander
             CommandTree.ExpandAll();
         }
 
+        private void UpdateUI()
+        {
+            if (CommandTree.SelectedNode != null)
+            {
+                Command selectedCommand = Commands.GetCommandByString(CommandTree.SelectedNode.Text);
+                if (selectedCommand != null)
+                {
+                    DisplayTextBox.Text = selectedCommand.displayText;
+                    CommandTextBox.Text = selectedCommand.commandText;
+                    RunsHiddenCheckbox.Checked = selectedCommand.runsHidden;
+                }
+            }
+            else
+            {
+                DisplayTextBox.Text = "";
+                CommandTextBox.Text = "";
+                RunsHiddenCheckbox.Checked = false;
+            }
+        }
+
         private void EnableDisableEditing()
         {
             if (CommandTree.SelectedNode == null)
@@ -151,51 +277,148 @@ namespace DevCommander
             ReorderUp.Enabled = true;
             ReorderDown.Enabled = true;
         }
+        #endregion
 
-        private void UpdateUI()
+        #region Reordering & Reparenting
+        private void DoReorderDown()
         {
-            if (CommandTree.SelectedNode != null)
+            int index = Commands.commandList.IndexOf(Commands.GetCommandByString(CommandTree.SelectedNode.Text));
+            prevSelected = index;
+            if (index != CommandTree.Nodes.Count - 1)
             {
-                Command selectedCommand = Commands.GetCommandByString(CommandTree.SelectedNode.Text);
-                if (selectedCommand != null)
-                {
-                    DisplayTextBox.Text = selectedCommand.displayText;
-                    CommandTextBox.Text = selectedCommand.commandText;
-                    RunsHiddenCheckbox.Checked = selectedCommand.runsHidden;
-                }
-            }
-            else
-            {
-                DisplayTextBox.Text = "";
-                CommandTextBox.Text = "";
-                RunsHiddenCheckbox.Checked = false;
+                Command cmdToMove = Commands.commandList[index];
+                Command temp = Commands.commandList[index + 1];
+                Commands.commandList[index + 1] = cmdToMove;
+                Commands.commandList[index] = temp;
+                RefreshList();
+                DisableEditing();
+                CommandTree.SelectedNode = GetNodeByString(Commands.commandList[prevSelected + 1].displayText);
             }
         }
+
+        private void DoReorderUp()
+        {
+            int index = Commands.commandList.IndexOf(Commands.GetCommandByString(CommandTree.SelectedNode.Text));
+            prevSelected = index;
+            if (index > 0)
+            {
+                Command cmdToMove = Commands.commandList[index];
+                Command temp = Commands.commandList[index - 1];
+                Commands.commandList[index - 1] = cmdToMove;
+                Commands.commandList[index] = temp;
+                RefreshList();
+                DisableEditing();
+
+                CommandTree.SelectedNode = GetNodeByString(Commands.commandList[prevSelected - 1].displayText);
+            }
+        }
+
+        private void DoReparentDown()
+        {
+            TreeNode currNode = CommandTree.SelectedNode;
+
+            if (currNode == null)
+            {
+                return;
+            }
+            string newname = currNode.Text;
+            TreeNode prevNode = CommandTree.SelectedNode.PrevNode;
+            string prefix = Program.GetPrefix(currNode.Text);
+
+            if (prefix == "><")
+            {
+                newname = Program.DemakeSibling(currNode.Text);
+            }
+            else if (prefix.Contains("><"))
+            {
+                newname = Program.SubtractBrace(currNode.Text);
+            }
+            else if (!prefix.Contains("><") && prefix != ">>")
+            {
+                newname = Program.MakeParent(currNode.Text);
+            }
+            RefreshList();
+
+            CommandTree.SelectedNode = GetNodeByString(newname);
+        }
+
+        private void DoReparentUp()
+        {
+            TreeNode currNode = CommandTree.SelectedNode;
+
+            if (currNode == null)
+            {
+                return;
+            }
+            string newname = currNode.Text;
+            string prefix = Program.GetPrefix(currNode.Text);
+
+            if (prefix == ">>")
+            {
+                newname = Program.DemakeParent(currNode.Text);
+
+                if (Program.GrandParentsExistBelow(currNode.Text))
+                {
+                    List<Command> grandParents = Program.GetGrandParentsBelow(newname);
+                    foreach (Command grandParent in grandParents)
+                    {
+                        Program.SubtractBrace(grandParent.displayText);
+                    }
+                }
+
+                foreach (TreeNode node in CommandTree.Nodes)
+                {
+                    List<Command> siblings = Program.GetSiblingsBelow(newname);
+                    if (Program.GetPrefix(node.Text).Equals("><"))
+                    {
+                        foreach (Command sibling in siblings)
+                        {
+                            Program.DemakeSibling(node.Text);
+                        }
+                    }
+                }
+            }
+            else if (!prefix.Contains("><") && prefix != ">>")
+            {
+                if (Program.ParentsExistAbove(currNode.Text))
+                {
+                    newname = Program.MakeSibling(currNode.Text);
+                    if (Program.GrandParentsExistBelow(newname))
+                    {
+                        List<Command> grandParents = Program.GetGrandParentsBelow(newname);
+                        foreach (Command grandParent in grandParents)
+                        {
+                            Program.SubtractBrace(grandParent.displayText);
+                        }
+                    }
+                }
+            }
+            else if (prefix.Contains("><"))
+            {
+                if (Program.ParentsExistAbove(currNode.Text) && currNode.Level > 0)
+                {
+                    newname = Program.AddBrace(currNode.Text);
+                    if (Program.GrandParentsExistBelow(newname))
+                    {
+                        List<Command> grandParents = Program.GetGrandParentsBelow(newname);
+                        foreach (Command grandParent in grandParents)
+                        {
+                            Program.SubtractBrace(grandParent.displayText);
+                        }
+                    }
+                }
+            }
+
+            RefreshList();
+            CommandTree.SelectedNode = GetNodeByString(newname);
+        }
+        #endregion
+
+        #region Form Control Bindings
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
             Save();
-        }
-
-        private void Save()
-        {
-            SaveChanges.Visible = false;
-            editing = false;
-            displayText = IncrementNameUntilUnique(DisplayTextBox.Text, Commands.GetCommandByString(CommandTree.SelectedNode.Text).displayText);
-            commandText = CommandTextBox.Text;
-            if (adding)
-            {
-                adding = false;
-            }
-            Command newCommand = new Command(displayText, commandText, togglable, RunsHiddenCheckbox.Checked);
-            Commands.SetCommandByString(CommandTree.SelectedNode.Text, newCommand);
-            CommandTree.SelectedNode.Text = displayText;
-            CommandTree.SelectedNode = GetNodeByString(displayText);
-
-            Program.SaveCommands();
-            DisableEditing();
-            RefreshList();
-            CommandTree.SelectedNode = GetNodeByString(displayText);
         }
 
         private void OKButton_Click(object sender, EventArgs e)
@@ -206,11 +429,14 @@ namespace DevCommander
             }
             if (editing)
             {
-                Command currCmd = Commands.GetCommandByString(CommandTree.SelectedNode.Text);
-                if (currCmd != null && currCmd.commandText != CommandTextBox.Text)
+                if (CommandTree.SelectedNode != null)
                 {
-                    SaveChanges.Visible = true;
-                    return;
+                    Command currCmd = Commands.GetCommandByString(CommandTree.SelectedNode.Text);
+                    if (currCmd != null && currCmd.commandText != CommandTextBox.Text)
+                    {
+                        SaveChanges.Visible = true;
+                        return;
+                    }
                 }
             }
             Close();
@@ -258,41 +484,69 @@ namespace DevCommander
                 Commands.commandList.Remove(Commands.GetCommandByString(nodeText));
                 Program.SaveCommands();
                 RefreshList();
-                CommandTree.SelectedNode = GetNodeByString(Commands.commandList[newIndex].displayText);
+                if (Commands.commandList.Count > 0)
+                {
+                    CommandTree.SelectedNode = GetNodeByString(Commands.commandList[newIndex].displayText);
+                }
+            }
+        }
+
+        private void CommandTree_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            EnableDisableEditing();
+            if (adding)
+            {
+                adding = false;
+                UpdateUI();
+            }
+            else if (aboutToAdd)
+            {
+                adding = true;
+                aboutToAdd = false;
+            }
+            else
+            {
+                UpdateUI();
             }
         }
 
         private void ReorderUp_Click(object sender, EventArgs e)
         {
-            int index = Commands.commandList.IndexOf(Commands.GetCommandByString(CommandTree.SelectedNode.Text));
-            prevSelected = index;
-            if (index > 0)
-            {
-                Command cmdToMove = Commands.commandList[index];
-                Command temp = Commands.commandList[index - 1];
-                Commands.commandList[index - 1] = cmdToMove;
-                Commands.commandList[index] = temp;
-                RefreshList();
-                DisableEditing();
-
-                CommandTree.SelectedNode = GetNodeByString(Commands.commandList[prevSelected - 1].displayText);
-            }
+            DoReorderUp();
         }
 
         private void ReorderDown_Click(object sender, EventArgs e)
         {
-            int index = Commands.commandList.IndexOf(Commands.GetCommandByString(CommandTree.SelectedNode.Text));
-            prevSelected = index;
-            if (index != CommandTree.Nodes.Count - 1)
+            DoReorderDown();
+        }
+
+        private void reportABugToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            psInfo = new ProcessStartInfo
             {
-                Command cmdToMove = Commands.commandList[index];
-                Command temp = Commands.commandList[index + 1];
-                Commands.commandList[index + 1] = cmdToMove;
-                Commands.commandList[index] = temp;
-                RefreshList();
-                DisableEditing();
-                CommandTree.SelectedNode = GetNodeByString(Commands.commandList[prevSelected + 1].displayText);
-            }
+                FileName = "https://prestonpeek.weebly.com/report-bugs.html",
+                UseShellExecute = true
+            };
+            Process.Start(psInfo);
+        }
+
+        private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            psInfo = new ProcessStartInfo
+            {
+                FileName = "https://drive.google.com/file/d/1B8ae90jQxGOZ2_KW-iePD35r1a3lgdI1/view?pli=1",
+                UseShellExecute = true
+            };
+            Process.Start(psInfo);
+        }
+        private void ReparentDown_Click(object sender, EventArgs e)
+        {
+            DoReparentDown();
+        }
+
+        private void ReparentUp_Click(object sender, EventArgs e)
+        {
+            DoReparentUp();
         }
 
         private void DisplayTextBox_TextChanged(object sender, EventArgs e)
@@ -318,97 +572,6 @@ namespace DevCommander
         private void RunButton_Click(object sender, EventArgs e)
         {
             Commands.FireCommandByString(DisplayTextBox.Text);
-        }
-
-        private string IncrementNameUntilUnique(string displayName)
-        {
-            return IncrementNameUntilUnique(displayName, "");
-        }
-
-        private string IncrementNameUntilUnique(string displayName, string ignore)
-        {
-            string patternWparenths = "[ ][(]\\d+[)]";
-            string patternIndex = "\\d+";
-            Regex indexwParenths = new Regex(patternWparenths);
-            Regex indexOnly = new Regex(patternIndex);
-            string newDisplayName = displayName;
-
-            //if command exists in list already
-            while (Commands.GetCommandByString(newDisplayName) != null)
-            {
-                if (newDisplayName.Equals(ignore))
-                {
-                    return newDisplayName;
-                }
-
-                string endDisplayName = newDisplayName.Substring(newDisplayName.Length - 4, 4);
-                string beginDisplayName = newDisplayName.Substring(0, newDisplayName.Length - 4);
-                //if the command already has a " (##)" suffix
-                MatchCollection matches = indexwParenths.Matches(endDisplayName);
-                if (matches.Count > 0)
-                {
-                    //increment it
-                    MatchCollection indexMatch = indexOnly.Matches(endDisplayName);
-                    int index = int.Parse(indexMatch[0].Value);
-                    index++;
-                    newDisplayName = beginDisplayName + " (" + index + ")";
-                }
-                else
-                {
-                    //add one
-                    newDisplayName = displayName + " (1)";
-                }
-            }
-            return newDisplayName;
-        }
-
-        private TreeNode GetNodeByString(string displayText)
-        {
-            //return GetNodeByString(displayText, CommandTree.Nodes);
-            foreach (KeyValuePair<string, TreeNode> kvp in AllNodes)
-            {
-                if (kvp.Key.Equals(displayText))
-                {
-                    return kvp.Value;
-                }
-            }
-            return null;
-        }
-
-        private TreeNode GetNodeByString(string displayText, TreeNodeCollection nodesToCheck)
-        {
-
-            foreach (TreeNode node in nodesToCheck)
-            {
-                if (node.Text == displayText)
-                {
-                    return node;
-                }
-                if (node.Nodes.Count > 0)
-                {
-                    return GetNodeByString(displayText, node.Nodes);
-                }
-            }
-            return null;
-        }
-
-        private void CommandTree_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-            EnableDisableEditing();
-            if (adding)
-            {
-                adding = false;
-                UpdateUI();
-            }
-            else if (aboutToAdd)
-            {
-                adding = true;
-                aboutToAdd = false;
-            }
-            else
-            {
-                UpdateUI();
-            }
         }
 
         private void FolderButton_Click(object sender, EventArgs e)
@@ -440,25 +603,6 @@ namespace DevCommander
         {
             SaveChanges.Visible = false;
         }
-
-        private void reportABugToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            psInfo = new ProcessStartInfo
-            {
-                FileName = "https://prestonpeek.weebly.com/report-bugs.html",
-                UseShellExecute = true
-            };
-            Process.Start(psInfo);
-        }
-
-        private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            psInfo = new ProcessStartInfo
-            {
-                FileName = "https://drive.google.com/file/d/1B8ae90jQxGOZ2_KW-iePD35r1a3lgdI1/view?pli=1",
-                UseShellExecute = true
-            };
-            Process.Start(psInfo);
-        }
+        #endregion
     }
 }

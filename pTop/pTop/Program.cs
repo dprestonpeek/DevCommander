@@ -14,13 +14,10 @@ namespace DevCommander
     class Program
     {
         static string programName = "DevCommander";
-
         static string cmdFile = "commands.txt";
 
-        static ManualResetEvent _quitEvent = new ManualResetEvent(false);
         static NotifyIcon notifyIcon = new NotifyIcon();
         static ContextMenuStrip commandMenu = new ContextMenuStrip();
-        static ContextMenuStrip pTopMenu = new ContextMenuStrip();
         static EditCommands editCmdsWindow;
 
         static string currentSelected = "";
@@ -28,10 +25,10 @@ namespace DevCommander
 
         //4 Digit Version Number: Major.minor-fixx
         // 0.2-00 would be 200. 1.4.13 would be 1413.
-        public static int version = 201;
-        public static string versionNumStr = "0.2-01";
+        public static int version = 300;
+        public static string versionNumStr = "0.3-00";
         public static string lilVersionStr = "Alpha Version " + versionNumStr;
-        public static string versionStr = "Alpha Version " + versionNumStr + "  |  Released October 28th, 2025";
+        public static string versionStr = "Alpha Version " + versionNumStr + "  |  Released November 1st, 2025";
 
         static void Main(string[] args)
         {
@@ -76,37 +73,6 @@ namespace DevCommander
 
         }
 
-        public static void LoadCommands()
-        {
-            string commandText = File.ReadAllText(cmdFile);
-            string[] commands = commandText.Split('~');
-            for (int i = 0; i < commands.Length - 1; i += 4)
-            {
-                try
-                {
-                    Commands.commandList.Add(new Command(commands[i], commands[i + 1], bool.Parse(commands[i + 2]), bool.Parse(commands[i + 3])));
-                }
-                catch(Exception ex)
-                {
-                    UpdatePatching.ForceUpdate();
-                }
-            }
-        }
-
-        public static void SaveCommands()
-        {
-            string saveText = "";
-            foreach (Command cmd in Commands.commandList)
-            {
-                saveText += cmd.displayText + "~" + cmd.commandText + "~" + cmd.togglable + "~" + cmd.runsHidden;
-                if (cmd.displayText != Commands.commandList[Commands.commandList.Count - 1].displayText)
-                {
-                    saveText += "~";
-                }
-            }
-            File.WriteAllText(cmdFile, saveText);
-        }
-
         private static void OpenContextMenu(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -119,7 +85,7 @@ namespace DevCommander
                 {
                     ToolStripMenuItem itemToAdd = null;
                     string displayName = command.displayText;
-                    
+
                     //this is a new parent, but also close the current submenu
                     if (displayName != "" && displayName.Substring(0, 2).Equals("><"))
                     {
@@ -235,18 +201,298 @@ namespace DevCommander
             }
         }
 
-        private static bool IsSelected(string action)
+        #region SaveLoad
+        public static void SaveCommands()
         {
-            if (currentSelected == action)
+            string saveText = "";
+            foreach (Command cmd in Commands.commandList)
             {
-                return true;
+                saveText += cmd.displayText + "~" + cmd.commandText + "~" + cmd.togglable + "~" + cmd.runsHidden;
+                if (cmd.displayText != Commands.commandList[Commands.commandList.Count - 1].displayText)
+                {
+                    saveText += "~";
+                }
             }
-            return false;
+            File.WriteAllText(cmdFile, saveText);
         }
+
+        public static void LoadCommands()
+        {
+            string commandText = File.ReadAllText(cmdFile);
+            string[] commands = commandText.Split('~');
+            for (int i = 0; i < commands.Length - 1; i += 4)
+            {
+                try
+                {
+                    Commands.commandList.Add(new Command(commands[i], commands[i + 1], bool.Parse(commands[i + 2]), bool.Parse(commands[i + 3])));
+                }
+                catch(Exception ex)
+                {
+                    UpdatePatching.ForceUpdate();
+                }
+            }
+        }
+        #endregion
+
+        #region Re-Parenting Functions
+        public static string GetPrefix(string text)
+        {
+            string prefix = text.Substring(0, 2);
+            int extraBraces = 0;
+            if (!string.IsNullOrEmpty(prefix))
+            {
+                if (prefix == "><")
+                {
+                    for (int i = 2; i < text.Length; i++)
+                    {
+                        if (text[i] == '<')
+                        {
+                            extraBraces++;
+                        }
+                    }
+                }
+            }
+            for (int i = 0; i < extraBraces; i++)
+            {
+                prefix += "<";
+            }
+            return prefix;
+        }
+
+        public static string MakeParent(string displayText)
+        {
+            string newname = displayText;
+            foreach (Command cmd in Commands.commandList)
+            {
+                if (cmd.displayText == displayText)
+                {
+                    cmd.displayText = ">>" + displayText;
+                    newname = cmd.displayText;
+                }
+            }
+            SaveCommands();
+            return newname;
+        }
+
+        public static string DemakeParent(string displayText)
+        {
+            string newname = displayText;
+            foreach (Command cmd in Commands.commandList)
+            {
+                if (cmd.displayText == displayText)
+                {
+                    cmd.displayText = cmd.displayText.Replace(">>", "");
+                    newname = cmd.displayText;
+                }
+            }
+            SaveCommands();
+            return newname;
+        }
+
+        public static string MakeSibling(string displayText)
+        {
+            string newname = displayText;
+            foreach (Command cmd in Commands.commandList)
+            {
+                if (cmd.displayText == displayText)
+                {
+                    cmd.displayText = "><" + displayText;
+                    newname = cmd.displayText;
+                }
+            }
+            SaveCommands();
+            return newname;
+        }
+
+        public static string AddBrace(string displayText)
+        {
+            string newname = displayText;
+            foreach (Command cmd in Commands.commandList)
+            {
+                if (cmd.displayText == displayText)
+                {
+                    cmd.displayText = cmd.displayText.Insert(2, "<");
+                    newname = cmd.displayText;
+                }
+            }
+            SaveCommands();
+            return newname;
+        }
+
+        public static string SubtractBrace(string displayText)
+        {
+            string newname = displayText;
+            foreach (Command cmd in Commands.commandList)
+            {
+                if (cmd.displayText == displayText)
+                {
+                    if (cmd.displayText[2] == '<')
+                    {
+                        cmd.displayText = cmd.displayText.Remove(2, 1);
+                        newname = cmd.displayText;
+                    }
+                }
+            }
+            SaveCommands();
+            return newname;
+        }
+
+        public static string DemakeSibling(string displayText)
+        {
+            string newname = "";
+            foreach (Command cmd in Commands.commandList)
+            {
+                if (cmd.displayText == displayText)
+                {
+                    cmd.displayText = cmd.displayText.Replace("><", "");
+                    newname = cmd.displayText;
+                }
+            }
+            SaveCommands();
+            return newname;
+        }
+
+        public static string TurnParentIntoSibling(string displayText)
+        {
+            string newname = "";
+            foreach (Command cmd in Commands.commandList)
+            {
+                if (cmd.displayText == displayText)
+                {
+                    cmd.displayText = cmd.displayText.Replace(">>", "><");
+                    newname = cmd.displayText;
+                }
+            }
+            SaveCommands();
+            return newname;
+        }
+
+        public static string TurnSiblingIntoParent(string displayText)
+        {
+            string newname = "";
+            foreach (Command cmd in Commands.commandList)
+            {
+                if (cmd.displayText == displayText)
+                {
+                    cmd.displayText = cmd.displayText.Replace("><", ">>");
+                    newname = cmd.displayText;
+                }
+            }
+            SaveCommands();
+            return newname;
+        }
+
+        public static bool ParentsExistAbove(string displayText)
+        {
+            bool exists = false;
+            foreach (Command cmd in Commands.commandList)
+            {
+                if (cmd.displayText.Substring(0, 2) == ">>")
+                {
+                    exists = true;
+                }
+                if (cmd.displayText == displayText)
+                {
+                    break;
+                }
+            }
+            return exists;
+        }
+
+        public static bool GrandParentsExistBelow(string displayText)
+        {
+            bool exists = false;
+            foreach (Command cmd in Commands.commandList)
+            {
+                if (cmd.displayText.Substring(0, 3) == "><<")
+                {
+                    exists = true;
+                }
+                if (cmd.displayText == displayText)
+                {
+                    break;
+                }
+            }
+            return exists;
+        }
+
+        public static List<Command> GetGrandParentsBelow(string displayText)
+        {
+            List<Command> grandParents = new List<Command>();
+            bool currNodeFound = false;
+            foreach (Command cmd in Commands.commandList)
+            {
+                if (!currNodeFound)
+                {
+                    if (cmd.displayText != displayText)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        currNodeFound = true;
+                        continue;
+                    }
+                }
+
+                if (GetPrefix(cmd.displayText) == "><<")
+                {
+                    grandParents.Add(cmd);
+                }
+            }
+            return grandParents;
+        }
+
+        public static bool SiblingsExistBelow(string displayText)
+        {
+            bool exists = false;
+            foreach (Command cmd in Commands.commandList)
+            {
+
+                if (GetPrefix(cmd.displayText) == "><")
+                {
+                    exists = true;
+                }
+                if (cmd.displayText == displayText)
+                {
+                    break;
+                }
+            }
+            return exists;
+        }
+
+        public static List<Command> GetSiblingsBelow(string displayText)
+        {
+            List<Command> siblings = new List<Command>();
+            bool currNodeFound = false;
+            foreach (Command cmd in Commands.commandList)
+            {
+                if (!currNodeFound)
+                {
+                    if (cmd.displayText != displayText)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        currNodeFound = true;
+                        continue;
+                    }
+                }
+
+                if (GetPrefix(cmd.displayText) == "><")
+                {
+                    siblings.Add(cmd);
+                }
+            }
+            return siblings;
+        }
+        #endregion
     }
 
-/// <summary>Contains functionality to get all the open windows.</summary>
-public static class OpenWindowGetter
+    #region OpenWindowGetter
+    /// <summary>Contains functionality to get all the open windows.</summary>
+    public static class OpenWindowGetter
     {
         /// <summary>Returns a dictionary that contains the handle and title of all the open windows.</summary>
         /// <returns>A dictionary that contains the handle and title of all the open windows.</returns>
@@ -292,3 +538,4 @@ public static class OpenWindowGetter
         private static extern IntPtr GetShellWindow();
     }
 }
+#endregion

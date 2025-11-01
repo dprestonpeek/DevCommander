@@ -50,6 +50,8 @@ namespace DevCommander
             FolderButton = new System.Windows.Forms.Button();
             splitContainer1 = new System.Windows.Forms.SplitContainer();
             RunsHiddenCheckbox = new System.Windows.Forms.CheckBox();
+            ReparentUp = new System.Windows.Forms.Button();
+            ReparentDown = new System.Windows.Forms.Button();
             checkBox2 = new System.Windows.Forms.CheckBox();
             menuStrip1 = new System.Windows.Forms.MenuStrip();
             editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -269,6 +271,8 @@ namespace DevCommander
             // 
             // splitContainer1.Panel2
             // 
+            splitContainer1.Panel2.Controls.Add(ReparentUp);
+            splitContainer1.Panel2.Controls.Add(ReparentDown);
             splitContainer1.Panel2.Controls.Add(checkBox2);
             splitContainer1.Panel2.Controls.Add(label1);
             splitContainer1.Panel2.Controls.Add(CommandTree);
@@ -293,6 +297,28 @@ namespace DevCommander
             RunsHiddenCheckbox.TabIndex = 12;
             RunsHiddenCheckbox.Text = "Hide cmd window";
             RunsHiddenCheckbox.UseVisualStyleBackColor = true;
+            // 
+            // ReparentUp
+            // 
+            ReparentUp.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            ReparentUp.Location = new System.Drawing.Point(114, 19);
+            ReparentUp.Name = "ReparentUp";
+            ReparentUp.Size = new System.Drawing.Size(23, 23);
+            ReparentUp.TabIndex = 17;
+            ReparentUp.Text = "←";
+            ReparentUp.UseVisualStyleBackColor = true;
+            ReparentUp.Click += ReparentUp_Click;
+            // 
+            // ReparentDown
+            // 
+            ReparentDown.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            ReparentDown.Location = new System.Drawing.Point(139, 19);
+            ReparentDown.Name = "ReparentDown";
+            ReparentDown.Size = new System.Drawing.Size(23, 23);
+            ReparentDown.TabIndex = 18;
+            ReparentDown.Text = "→";
+            ReparentDown.UseVisualStyleBackColor = true;
+            ReparentDown.Click += ReparentDown_Click;
             // 
             // checkBox2
             // 
@@ -419,5 +445,7 @@ namespace DevCommander
         private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.ToolStripMenuItem reportABugToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem checkForUpdatesToolStripMenuItem;
+        private System.Windows.Forms.Button ReparentUp;
+        private System.Windows.Forms.Button ReparentDown;
     }
 }
